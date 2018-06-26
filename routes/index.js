@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var sha1 = require('jssha');
+var sha1 = require('sha1');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
