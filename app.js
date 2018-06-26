@@ -63,7 +63,7 @@ var authRedis = function () {
 authRedis();
 
 var refreshAccessToken = function () {
-  console.log("启动定时器-------------");
+  console.log("启动定时器--------------");
     client.select('access_token', function(error,data){
         if(error) {
             console.log(error);
