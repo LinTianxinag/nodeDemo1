@@ -11,7 +11,7 @@ var tasks = require('./service/scheduleTask');
 var http=require('http');
 var axios=require('axios');
 var redis   = require('redis');
-var client  = redis.createClient('6379', '116.62.236.103');
+var client  = redis.createClient('6379', '127.0.0.1');
 
 
 var app = express();
@@ -60,10 +60,21 @@ client.on("error", function(error) {
 var authRedis = function () {
     client.auth("Xiangyun2013");
 }
+authRedis();
 
 var refreshAccessToken = function () {
   console.log("启动定时器-------------");
-    getAccessToken();
+    client.select('access_token', function(error,data){
+        if(error) {
+            console.log(error);
+        } else {
+            if(data){
+                console.log('存在access_token：暂时不用获取');
+            }else{
+                getAccessToken();
+            }
+        }
+    });
     var refreshInt = setInterval(function () {
         getAccessToken();
     },100*60*1000);
@@ -81,20 +92,19 @@ var getAccessToken = function () {
         }
     }).then(function (userinfo) {
         console.log(userinfo.data);
-        client.select('access_token', function(error){
-            if(error) {
-                console.log(error);
-            } else {
-                // set
-                client.set('access_token', '0', function(error, res) {
-                    if(error) {
-                        console.log(error);
-                    } else {
-                        console.log(res);
-                    }
-                });
-            }
-        });
+        if(userinfo.data.access_token){
+            console.log("access_token: 获取到token" + userinfo.data.access_token);
+            client.set('access_token', userinfo.data.access_token, function(error, res) {
+                if(error) {
+                    console.log(error);
+                } else {
+                    console.log(res);
+                    console.log("accesstoken： 开始设置时间");
+                    client.expire('access_token', 120*60*1000);//这里时间多一些，这样获取的时候这个token还在
+                }
+            });
+        }
+
 
     });
 }
