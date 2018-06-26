@@ -64,7 +64,7 @@ authRedis();
 
 var refreshAccessToken = function () {
   console.log("启动定时器--------------");
-    client.select('access_token', function(error,data){
+    client.select('accesstoken', function(error,data){
         if(error) {
             console.log(error);
         } else {
@@ -93,14 +93,14 @@ var getAccessToken = function () {
     }).then(function (userinfo) {
         console.log(userinfo.data);
         if(userinfo.data.access_token){
-            console.log("access_token: 获取到token" + userinfo.data.access_token);
-            client.set('access_token', userinfo.data.access_token, function(error, res) {
+            console.log("accesstoken: 获取到token" + userinfo.data.access_token);
+            client.set('accesstoken', userinfo.data.access_token, function(error, res) {
                 if(error) {
                     console.log(error);
                 } else {
                     console.log(res);
                     console.log("accesstoken： 开始设置时间");
-                    client.expire('access_token', 120*60*1000);//这里时间多一些，这样获取的时候这个token还在
+                    client.expire('accesstoken', 120*60*1000);//这里时间多一些，这样获取的时候这个token还在
                 }
             });
         }
