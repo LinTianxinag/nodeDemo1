@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>蝙蝠抓蚊子</title>
+  <script type="text/javascript" src="javascripts/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="javascripts/myDraw.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheets/someAct.css"/>
+
+
+</head>
+
+<script>
+  var cxt,actType=0;
+  var backColor="#7189ab",foodColor="#ffef9c",
+  hunterColor="#bb9142";
+  function getMousePos(event) {
+      var e = event || window.event;
+      if(e.button==0){
+          actType=0;
+      }else if(e.button==2){
+          actType=1;
+      }
+      console.log("why not work");
+      beginDraw(cxt,actType,{'x':e.clientX,'y':e.clientY})
+
+  }
+  function getArc(degree) {
+      return (degree/360)*2*Math.PI;
+  }
+
+
+    $(document).ready(function () {
+//        alert("every body can pass the game,for it is designed for this.But it it funny,you need to use you brain");
+        var c=document.getElementById("myCanvas");
+        cxt=c.getContext("2d");
+//        绘制线条,将绘制的东西放到对应的区域里面，然后进行一定的缩放
+//        绘制大圆(蝙蝠)
+        cxt.arc(150,150,10,getArc(0),getArc(360));
+        cxt.fillStyle=hunterColor;
+        cxt.fill();
+
+
+        cxt.stroke();
+    })
+
+
+</script>
+<body>
+<canvas id="myCanvas" width="800" height="600" onmousedown="getMousePos(event)">
+  你的浏览器不支持画布功能
+</canvas>
+
+</body>
+<!--这里会做一个蝙蝠
+吃蚊子的游戏，有一个大点是蝙蝠，一堆小点是蚊子，晚上的时候，蝙蝠发射雷达波，根据蚊子的波形发射，
+确认蚊子的位置，最后将蚊子吃掉，嘿嘿，吃掉。
+
+-->

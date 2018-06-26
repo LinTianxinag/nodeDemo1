@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>贪吃蛇</title>
+  <script type="text/javascript" src="javascripts/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="javascripts/someAct.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheets/someAct.css"/>
+
+
+</head>
+
+<script>
+    var mapOrigin=[
+            [1,1,0,0,0,1,0,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [0,0,0,1,0,1,1,1,1,0],
+            [1,0,1,0,1,1,0,0,0,0],
+            [0,1,0,1,1,0,0,0,1,1],
+            [1,0,0,0,0,1,0,0,1,1]
+        ] ,
+    map=[
+            [1,1,0,0,0,1,0,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [1,1,0,0,1,1,1,0,1,0],
+            [0,0,0,1,0,1,1,1,1,0],
+            [1,0,1,0,1,1,0,0,0,0],
+            [0,1,0,1,1,0,0,0,1,1],
+            [1,0,0,0,0,1,0,0,1,1]
+        ],
+        mapSnake=[
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,3,0],
+            [0,0,0,0,0,0,0,0,2,0],
+            [0,0,0,0,0,0,0,0,2,0],
+            [0,0,0,0,0,0,0,0,2,0],
+            [0,0,0,0,0,0,0,0,2,0],
+            [0,0,0,0,0,2,2,2,2,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0]
+        ],snakeArr=[
+            [3,5],
+            [3,6],
+            [3,7],
+            [3,8]
+        ];
+
+function initDir() {
+    // 初始化方向按钮
+    $('#up').click(function () {
+        $('#dir').val(0);
+    })
+    $('#left').click(function () {
+        $('#dir').val(1);
+    })
+    $('#down').click(function () {
+        $('#dir').val(2);
+    })
+    $('#right').click(function () {
+        $('#dir').val(3);
+    })
+    document.onkeydown=function(event){
+                 var e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e.keyCode==38){
+            $('#dir').val(0);
+                           }
+                    if( e.keyCode==37){
+                        $('#dir').val(1);
+                           }
+                    if( e.keyCode==40){
+                        $('#dir').val(2);
+                         }
+        if( e.keyCode==39){
+            $('#dir').val(3);
+                         }
+                 };
+}
+
+    $(document).ready(function () {
+        initDir();
+        var c=document.getElementById("myCanvas");
+        var cxt=c.getContext("2d");
+            var imgWall=new Image();
+    imgWall.src="/images/someAct/wall.png";
+    var imgGrass=new Image();
+    imgGrass.src="/images/someAct/grass_1.png";
+    var imgHead=new Image();
+    imgHead.src="/images/someAct/snake_body.png";
+    var imgBody=new Image();
+    imgBody.src="/images/someAct/snake_head.png";
+    var dir=$('#dir');
+        var unit=39,imgs=[imgWall,imgGrass,imgHead,imgBody];
+        initMap(cxt,mapOrigin,map,snakeArr,imgs,unit);
+        beginGame(cxt,map,dir,snakeArr,imgs,unit);
+        cxt.stroke();
+    })
+
+
+</script>
+<body>
+<canvas id="myCanvas" width="800" height="600">
+  你的浏览器不支持画布功能
+</canvas>
+
+<div style="margin-top: 10%">
+  <input id="up" name="up" value="上" type="button" style="width: 5% ;margin-left: 2%"/>
+  <div>
+    <input id="left" name="left" value="左" type="button" style="width: 5%"/>
+    <input id="right" name="right" value="右" type="button" style="width: 5%"/>
+  </div>
+
+  <input id="down" name="down" value="下" type="button" style="width: 5%;margin-left: 2%"/>
+  <input id="dir" name="dir" type="hidden" value=3 />
+</div>
+<!--<img id="imgWall" src="/images/someAct/wall.png"/>-->
+<!--<img id="imgGrass" src="/images/someAct/grass_1.png"/>-->
+<!--<img id="imgHead" src="/images/someAct/snake_body.png"/>-->
+<!--<img id="imgBody" src="/images/someAct/snake_head.png"/>-->
+
+</body>
