@@ -22,8 +22,10 @@ router.get('/wx', function(req, res, next) {
 
     if (sha === signature) {
         res.send(echostr + '');
+        console.log("signature is ok");
     } else {
         res.send("");
+        console.log("signature is fail");
     }
 });
 
