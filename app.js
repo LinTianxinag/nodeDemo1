@@ -99,7 +99,7 @@ var getAccessToken = function () {
                     console.log(error);
                 } else {
                     console.log(res);
-                    console.log("accesstoken： 开始设置时间");
+                    console.log("accesstoken： 开始设置时间 ");
                     client.expire('accesstoken', 120*60*1000);//这里时间多一些，这样获取的时候这个token还在
                 }
             });
